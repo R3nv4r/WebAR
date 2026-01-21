@@ -1,0 +1,153 @@
+/* VARIABLES CSS*/
+
+:root {
+  --color-primario: #269dd8;
+  --color-fondo: #000000;
+  --color-texto: #ffffff;
+  --color-superposicion: rgb(41, 43, 44); 
+  --fuente-principal: 'Nunito', sans-serif;
+  --tamano-fuente-base: 16px; 
+  --radio-borde: 8px; 
+}
+/*ESTILOS GLOBALES Y RESET*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--tamano-fuente-base);
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; 
+  background-color: var(--color-fondo); 
+  color: var(--color-texto);
+  font-family: var(--fuente-principal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*Contenedores de AR */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+  overflow: hidden;
+}
+
+/* Asegura que la escena de A-Frame ocupe todo el espacio disponible */
+a-scene {
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlays */
+
+/* --- Pantalla de Carga --- */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-primario);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 1.5s ease-out; 
+  text-align: center;
+  padding: 1rem;
+}
+
+#loading-screen h1 {
+  margin-top: 1.5rem;
+  font-size: 1.5rem; 
+  animation: fadeInOut 2.5s infinite;
+}
+
+/* --- Mensaje de Orientación --- */
+#orientation-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-superposicion);
+  color: var(--color-texto);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  z-index: 1000;
+  
+
+  font-size: clamp(1.25rem, 8vw, 2.25rem);
+  line-height: 1.4;
+}
+
+/* COMPONENTES DE UI */
+
+/* --- Botón de Pantalla Completa --- */
+.fullscreen-btn {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%); 
+  z-index: 2000; 
+  background-color: rgba(83, 107, 125, 0.6);
+  border: none;
+  border-radius: var(--radio-borde);
+  cursor: pointer;
+  padding: 0.75rem;
+  transition: background-color 0.3s, transform 0.3s, top 0.3s, right 0.3s, bottom 0.3s, left 0.3s;
+}
+
+.fullscreen-btn svg {
+  width: 35px; 
+  height: 35px;
+}
+
+.fullscreen-btn:hover {
+  background-color: rgba(83, 107, 125, 0.9);
+  transform: translateX(-50%) scale(1.1); /* Efecto de crecimiento al pasar el cursor */
+}
+
+/* --- Ocultar botón de VR de A-Frame --- */
+.a-enter-vr-button {
+  display: none !important;
+}
+
+/*ANIMACIONES*/
+@keyframes fadeInOut {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/*MEDIA QUERIES PARA RESPONSIVIDAD*/
+@media (min-width: 768px) {
+  /* En pantallas grandes, el botón de pantalla completa se ve mejor en una esquina */
+  .fullscreen-btn {
+    top: auto; 
+    left: auto; 
+    bottom: 2rem;
+    right: 2rem;
+    transform: none; 
+  }
+
+  .fullscreen-btn:hover {
+    transform: scale(1.1); 
+  }
+  
+  #loading-screen h1 {
+    font-size: 2rem; 
+  }
+}

@@ -2,12 +2,12 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>WebAR Video con Audio</title>
+    <title>WebAR Video</title>
     <!-- Librerías de A-Frame y MindAR -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     
-    <!-- Tu CSS existente -->
+    
     <link rel="stylesheet" href="./css/detonadores.css">
 
     <style>
@@ -69,7 +69,7 @@
               // NOTA: Si el navegador bloquea el audio, el video quedará pausado
               // y el usuario podrá usar el botón para iniciar.
               this.vid.play().catch(e => {
-                 console.log("Autoplay bloqueado, esperando interacción del usuario.");
+                console.log("Autoplay bloqueado, esperando interacción del usuario.");
               });
               
               // Mostrar el botón de control
@@ -91,7 +91,7 @@
 
     <!-- Pantalla de carga original (visible por defecto, loadingScreen.js la ocultará) -->
     <div id="loading-screen">
-       <img src="./assets/carga.gif" alt="Cargando...">
+      <img src="./assets/carga.gif" alt="Cargando...">
     </div>
 
     <!-- Nuevo Botón de Control -->
@@ -108,12 +108,12 @@
         <!-- Video Asset -->
         <!-- Recuerda cambiar 'video_ejemplo.mp4' por tu archivo real -->
         <video id="video-asset" 
-               src="./assets/themarvels.mp4" 
-               preload="auto" 
-               loop="true" 
-               crossorigin="anonymous" 
-               playsinline 
-               webkit-playsinline>
+              src="./assets/himnoUniversitario.m4v" 
+              preload="auto" 
+              loop="true" 
+              crossorigin="anonymous" 
+              playsinline 
+              webkit-playsinline>
         </video>
       </a-assets>
 

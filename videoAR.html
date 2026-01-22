@@ -65,9 +65,7 @@
           if (this.el.object3D.visible == true) {
             if (!this.toggle) {
               this.toggle = true;
-              // Intentar reproducir automáticamente al encontrar
-              // NOTA: Si el navegador bloquea el audio, el video quedará pausado
-              // y el usuario podrá usar el botón para iniciar.
+             
               this.vid.play().catch(e => {
                 console.log("Autoplay bloqueado, esperando interacción del usuario.");
               });
@@ -89,12 +87,11 @@
   </head>
   <body>
 
-    <!-- Pantalla de carga original (visible por defecto, loadingScreen.js la ocultará) -->
     <div id="loading-screen">
       <img src="./assets/carga.gif" alt="Cargando...">
     </div>
 
-    <!-- Nuevo Botón de Control -->
+ 
     <button id="play-button">▶</button>
 
     <a-scene 
@@ -105,10 +102,9 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <!-- Video Asset -->
-        <!-- Recuerda cambiar 'video_ejemplo.mp4' por tu archivo real -->
+ 
         <video id="video-asset" 
-              src="./assets/himnoUniversitario.m4v" 
+              src="./assets/Bandera.mp4" 
               preload="auto" 
               loop="true" 
               crossorigin="anonymous" 

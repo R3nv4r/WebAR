@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>VisioAR-Casa del Agua</title>
+  <link rel="stylesheet" href="css/detonadores.css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Scripts A-Frame y MindAR -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  
+
+</head>
+<body>
+  <!-- Mensaje de orientación -->
+  <div id="orientation-message">
+    Activa la pantalla completa para continuar.
+  </div>
+  
+  <!-- Botón de pantalla completa -->
+  <button class="fullscreen-btn" onclick="toggleFullScreen()">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 14H5V19H10V17H7V14ZM5 10H7V7H10V5H5V10ZM17 17H14V19H19V14H17V17ZM14 5V7H17V10H19V5H14Z" fill="#F0F7FF"/>
+    </svg>
+  </button>
+  <!-- Pantalla de carga -->
+  <div id="loading-screen">
+    <h1>Cargando...</h1>
+
+    <img src="assets/carga.gif" alt="Cargando..." sizes="200px" style="width: 200px; height: 100px;">
+  </div>
+  <!-- Contenedor de video y escena AR -->
+  <div class="video-container">
+    <canvas id="overlay"></canvas>
+    <a-scene mindar-image="imageTargetSrc:targets.mind;filterMinCF:0.001; filterBeta: 5; uiScanning: no" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled:false">
+      <a-assets>
+        <a-asset-item id="casagua" src="assets/pr/Agua Logo.glb"></a-asset-item>
+        <a-asset-item id="juchiman" src="assets/pr/2. Juchiman Animation Pueba.glb"></a-asset-item>
+        <a-asset-item id="legado" src="assets/pr/Legado Ujat girar.glb"></a-asset-item>
+        <a-asset-item id="casacao" src="assets/pr/Portal y Casa de cacao.glb"></a-asset-item>
+        <a-asset-item id="logoujat" src="assets/pr/Ujat Logo.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      
+      <!-- Modelos 3D TODOS sobre el marcador 0 -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- Modelo Legado (Original) -->
+        <a-gltf-model src="#legado" position="0.4 -0.2 0" scale="0.025 0.025 0.025" rotation="0 0 0" animation-mixer></a-gltf-model>
+        
+        <!-- Otros modelos agregados al mismo detonador -->
+        <!-- Se usaron los mismos valores de escala y rotación del original -->
+        <a-gltf-model src="#casagua" position="-0.1 -0.2 0" scale="0.025 0.025 0.025" rotation="0 -90 0" animation-mixer></a-gltf-model>
+        <a-gltf-model src="#juchiman" position="0 0 0" scale="0.2 0.2 0.2" rotation="0 -90 0" animation-mixer></a-gltf-model>
+        <a-gltf-model src="#casacao" position="0.1 -0.2 0" scale="0.025 0.025 0.025" rotation="0 -90 0" animation-mixer></a-gltf-model>
+        <a-gltf-model src="#logoujat" position="-0.4 -0.2 0" scale="0.025 0.025 0.025" rotation="0 0 0" animation-mixer></a-gltf-model>
+      </a-entity>
+      
+    </a-scene>
+  </div>
+<!-- Script para manejar pantalla completa y orientación -->
+  <script>
+function toggleFullScreen() {
+  const elem = document.documentElement;
+  const message = document.querySelector('#orientation-message');
+  const videoContainer = document.querySelector('.video-container');
+  const fullscreenBtn = document.querySelector('.fullscreen-btn');
+
+  if (!document.fullscreenElement) {
+    try {
+      // Activar pantalla completa
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+      // Bloquear orientación a portrait
+      if (window.screen.orientation && window.screen.orientation.lock) {
+        window.screen.orientation.lock('portrait').then(
+          () => console.log('Orientación bloqueada a portrait'),
+          (err) => console.warn('No se pudo bloquear la orientación:', err)
+        );
+      }
+      // Oculta el mensaje y muestra el contenido
+      if (message) {
+        message.style.display = 'none';
+      }
+      if (videoContainer) {
+        videoContainer.style.display = 'block';
+      }
+      if (fullscreenBtn) {
+        fullscreenBtn.style.top = 'auto';
+        fullscreenBtn.style.bottom = '20px';
+        fullscreenBtn.style.right = '20px';
+      }
+    } catch (err) {
+      console.error('Error al activar pantalla completa:', err);
+    }
+  } else {
+    try {
+      // Salir de pantalla completa
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+      // Desbloquear orientación
+      if (window.screen.orientation && window.screen.orientation.unlock) {
+        window.screen.orientation.unlock().catch(err => {
+          console.warn('No se pudo desbloquear la orientación:', err);
+        });
+      }
+      // Muestra el mensaje y oculta el contenido
+      if (message) {
+        setTimeout(() => {
+          message.style.display = 'block';
+          message.style.visibility = 'visible';
+          message.style.opacity = '1';
+        }, 0);
+      } else {
+        console.warn('El elemento #orientation-message no se encontró');
+      }
+      if (videoContainer) {
+        videoContainer.style.display = 'none';
+      }
+      
+    } catch (err) {
+      console.error('Error al salir de pantalla completa:', err);
+    }
+  }
+}
+
+// Listener para manejar cambios en pantalla completa
+document.addEventListener('fullscreenchange', () => {
+  const message = document.querySelector('#orientation-message');
+  const videoContainer = document.querySelector('.video-container');
+  const fullscreenBtn = document.querySelector('.fullscreen-btn');
+
+  if (!document.fullscreenElement) {
+    console.log('Saliendo de pantalla completa');
+    if (message) {
+      setTimeout(() => {
+        message.style.display = 'block';
+        message.style.visibility = 'visible';
+        message.style.opacity = '1';
+      }, 0);
+    } else {
+      console.warn('El elemento #orientation-message no se encontró');
+    }
+    if (videoContainer) {
+      videoContainer.style.display = 'none';
+    }
+    if (fullscreenBtn) {
+      fullscreenBtn.style.top = '60%';
+      fullscreenBtn.style.bottom = 'auto';
+      fullscreenBtn.style.right = 'auto';
+    }
+  }
+});
+  </script>
+
+  <script src="js/loadingScreen.js"></script>
+</body>
+</html>
